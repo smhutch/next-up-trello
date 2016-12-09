@@ -1,0 +1,38 @@
+<html>
+ <head>
+  <title>Trello Todo</title>
+  <link rel="stylesheet" href="trello.css" />
+  <link rel="stylesheet" href="node_modules/normalize.css/normalize.css" />
+  
+  <script src="trello.js"></script>
+ </head>
+ <body>
+  <div id="loader" class="active">
+    <div class="loading-spinner">
+      <div class="right"></div>
+      <div class="left"></div>
+      <div class="top"></div>
+      <div class="bottom"></div>
+    </div>
+  </div>
+  <div id="trello">
+    <div class="header">
+      <span class="header-text">Next Up Trello</span>
+      <div id="header-background"></div>
+    </div>
+    <div class="section" style="background-color: #FFCDD2;margin-top:60px;">
+      <div class="container" id="overdueCards"></div>
+    </div>
+    <div class="section" style="background-color: #BBDEFB;">
+      <div class="container" id="dueCards"></div>
+    </div>
+    <div class="section" style="background-color: #CFD8DC;">
+      <div class="container" id="noDeadlineCards"></div>
+    </div>
+    <div class="section" style="background-color: #C8E6C9;">
+      <div class="container" id="doneCards"></div>
+    </div>
+  </div>
+ </body>
+</html>
+
