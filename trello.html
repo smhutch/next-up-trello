@@ -4,35 +4,67 @@
   <link rel="stylesheet" href="trello.css" />
   <link rel="stylesheet" href="node_modules/normalize.css/normalize.css" />
   
+  <script src="scripts/key.js"></script>
+  <script src="lib/jquery1.7.1.min.js"></script>
+  <script src="lib/trello_client.js"></script>
+  <script src="lib/hashSearch.js"></script>
+  <script src="lib/segment.js"></script>
   <script src="trello.js"></script>
+  
  </head>
  <body>
-  <div id="loader" class="active">
-    <div class="loading-spinner">
-      <div class="right"></div>
-      <div class="left"></div>
-      <div class="top"></div>
-      <div class="bottom"></div>
-    </div>
-  </div>
-  <div id="trello">
-    <div class="header">
-      <span class="header-text">Next Up Trello</span>
-      <div id="header-background"></div>
-    </div>
-    <div class="section" style="background-color: #FFCDD2;margin-top:60px;">
-      <div class="container" id="overdueCards"></div>
-    </div>
-    <div class="section" style="background-color: #BBDEFB;">
-      <div class="container" id="dueCards"></div>
-    </div>
-    <div class="section" style="background-color: #CFD8DC;">
-      <div class="container" id="noDeadlineCards"></div>
-    </div>
-    <div class="section" style="background-color: #C8E6C9;">
-      <div class="container" id="doneCards"></div>
-    </div>
-  </div>
+   <header>
+     <span class="header-text">Next Up Trello</span>
+     <div id="header-background"></div>
+   </header>
+   <div class="content">
+     <div id="form" class="active">
+       <div id="open-form">
+         Menu
+       </div>
+       <div class="form-inner">
+         <button id="close-form" class="active">Close</button>
+         <div id="onboarding">   
+           <p>Here's how Next Up Trello works:</p>
+           <p>Trello boards are divided into <span class="overdue">overdue</span>, <span class="due">due</span>, <span class="done">done</span>, and <span class="no-deadline">cards with no due date</span>.</p>
+           <p><a target="_blank" href="https://www.smhutch.co.uk">Made by SMHutch</a></p>
+           <button id="get-started">Get Started</button>
+         </div>
+         <div id="settings">
+           <h1>Settings</h1>
+           <p><a href="#" id="show-onboarding">About Next Up Trello</a></p>
+           <p><a href="#" id="logout-button">Sign Out</a></p>
+         </div>
+         <div id="account-form" class="active">
+           <p>See your next available Trello tasks everytime you open a new tab.</p>
+           <p>Get started by connecting your Trello account.</p>
+           <button id="login-button">Login</button>
+         </div>
+       </div>
+     </div>
+     <div id="loader">
+       <div class="loading-spinner">
+         <div class="right"></div>
+         <div class="left"></div>
+         <div class="top"></div>
+         <div class="bottom"></div>
+       </div>
+     </div>
+     <div id="trello">
+       <div class="section" style="background-color: #FFCDD2;margin-top:60px;">
+         <div class="container" id="overdueCards"></div>
+       </div>
+       <div class="section" style="background-color: #BBDEFB;">
+         <div class="container" id="dueCards"></div>
+       </div>
+       <div class="section" style="background-color: #CFD8DC;">
+         <div class="container" id="noDeadlineCards"></div>
+       </div>
+       <div class="section" style="background-color: #C8E6C9;">
+         <div class="container" id="doneCards"></div>
+       </div>
+     </div>
+   </div>
  </body>
 </html>
 
