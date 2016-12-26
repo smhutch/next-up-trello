@@ -1,4 +1,6 @@
 {
+  "name": "Next Up Trello",
+  "version": "0.1",
   "manifest_version": 2,
   "name": "Blank new tab page",
   "description": "Override the new tab page with a blank one",
@@ -10,5 +12,14 @@
   "background": {
     "scripts": ["trello.js"],
     "persistent": false
-  }
+  },
+  "permissions": [
+    "identity",
+    "*://*.trello.com/",
+    "webNavigation",
+    "*://*.segment.com"
+  ],
+  "web_accessible_resources": [
+        "trello.*"
+    ]
 }
