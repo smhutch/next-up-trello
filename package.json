@@ -4,11 +4,25 @@
   "description": "",
   "main": "trello.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "styles": "node-sass --output-style compressed -o docs/css docs-src/styles.scss",
+    "prefix": "postcss -u autoprefixer -r docs/css/*",
+    "serve": "browser-sync start --server --start-path 'docs/' --files 'docs/css/*.css'",
+    "build:css": "npm run styles && npm run prefix",
+    "build:js": "mkdir -p docs/js && uglifyjs docs-src/index.js -m -o docs/js/index.js",
+    "build": "npm run build:css && npm run build:js",
+    "watch:js": "onchange 'docs-src/index.js' -- npm run build:js",
+    "watch:css": "onchange 'docs-src/styles.scss' -- npm run build:css",
+    "start": "parallelshell 'npm run serve' 'npm run watch:css' 'npm run watch:js'"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "normalize.css": "^5.0.0"
+  },
+  "devDependencies": {
+    "imagemin": "^5.2.2",
+    "node-sass": "^4.1.1",
+    "parallelshell": "^2.0.0"
   }
 }

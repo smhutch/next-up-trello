@@ -1,0 +1,74 @@
+$overdue: #F44336;
+$due:#2196F3;
+$no-deadline:#607D8B;
+$done:#4CAF50;
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 
+    "Segoe UI", "Roboto", "Oxygen", 
+    "Ubuntu", "Cantarell", "Fira Sans", 
+    "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+.container {
+  max-width: 90%;
+  width: 800px;
+  margin: 0px auto;
+  padding: 100px 0;
+  text-align: center;
+}
+
+header {
+  background-color: white;
+  perspective: 1000px;
+  
+  h1 {
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;  
+  }
+  
+  .styled-border {
+    display:flex;
+    
+    div {
+      height: 10px;
+      width: 100%;
+    }
+    
+    .overdue {background-color: $overdue;}
+    .due {background-color: $due;}
+    .no-deadline {background-color: $no-deadline;}
+    .done {background-color: $done;}
+  }
+  
+  .logo {
+    width: 90%;
+    max-width: 150px;
+  }
+  
+  .preview {
+    width: 100%;
+    box-shadow: 0px 10px 50px rgba(0,0,0,0.2);
+    transform: rotateX(20deg) translateY(100px);
+    margin-top: -80px;
+  }
+}
+
+main {
+  background-color: transparentize($due, 0.5);
+  color: darken($due, 30%);
+}
+
+footer {
+  background-color: transparentize($no-deadline, 0.5);
+  color: darken($no-deadline, 30%);
+  
+  a {
+    background-color: $no-deadline;
+    padding: 5px 10px;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+  }
+}
