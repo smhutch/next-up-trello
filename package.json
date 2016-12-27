@@ -13,7 +13,8 @@
     "build": "npm run build:css && npm run build:js",
     "watch:js": "onchange 'docs-src/index.js' -- npm run build:js",
     "watch:css": "onchange 'docs-src/styles.scss' -- npm run build:css",
-    "start": "parallelshell 'npm run serve' 'npm run watch:css' 'npm run watch:js'"
+    "start": "parallelshell 'npm run serve' 'npm run watch:css' 'npm run watch:js'",
+    "package" : "zip -r extension.zip extension"
   },
   "author": "",
   "license": "ISC",
