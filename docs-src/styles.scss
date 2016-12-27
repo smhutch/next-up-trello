@@ -50,7 +50,7 @@ header {
   .preview {
     width: 100%;
     box-shadow: 0px 10px 50px rgba(0,0,0,0.2);
-    transform: rotateX(20deg) translateY(100px);
+    transform: rotateX(15deg) translateY(100px);
     margin-top: -80px;
   }
 }
@@ -58,6 +58,31 @@ header {
 main {
   background-color: transparentize($due, 0.5);
   color: darken($due, 30%);
+  
+  .container {
+    perspective: 1000px;
+  }
+  
+  .button {
+    padding: 20px 40px;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
+    background-color: $due;
+    color: white;    
+    margin-top: 20px;
+    display: inline-block;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 300;
+    transition: 0.4s ease all;
+    transform: rotateX(20deg);
+    
+    &:hover {
+      transform: translateY(-5px) scale(1.1);
+      background-color: darken($due, 10%);
+      box-shadow: 0px 10px 10px rgba(0,0,0,0.2);
+    }
+  }
 }
 
 footer {
