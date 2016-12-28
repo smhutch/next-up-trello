@@ -2,8 +2,7 @@
   "name": "Next Up Trello",
   "version": "0.1",
   "manifest_version": 2,
-  "description": "Override the new tab page with a blank one",
-  "version": "0.1",
+  "description": "See your due Trello tasks in each new tab.",
   "incognito": "split",
   "chrome_url_overrides": {
     "newtab": "trello.html"
