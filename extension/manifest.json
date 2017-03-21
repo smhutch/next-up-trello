@@ -1,11 +1,15 @@
 {
   "name": "Next Up Trello",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "manifest_version": 2,
   "description": "See your due Trello tasks in each new tab.",
   "incognito": "split",
   "chrome_url_overrides": {
-    "newtab": "trello.html"
+    "newtab": "index.html"
+  },
+  "page_action": {
+    "default_title" : "View Next Up Trello",
+    "default_popup" : "trello.html"
   },
   "background": {
     "scripts": ["trello.js"],
