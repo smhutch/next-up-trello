@@ -199,9 +199,7 @@ var app = new Vue({
       getBoards.onload = () => {
         if(getBoards.status === 200) {
           var boards = JSON.parse(getBoards.response);
-          console.log(boards.length);
           var open = boards.filter((b) => b.closed === false);
-          console.log(open.length);
           var output = open.map((b) => {
             var org = b.idOrganization;
             if (org) {
