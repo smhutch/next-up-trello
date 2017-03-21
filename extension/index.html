@@ -1,0 +1,161 @@
+<html>
+ <head>
+  <title>Next Up Trello</title>
+  <link rel="stylesheet" href="trello.css" />
+  <link rel="stylesheet" href="normalize.css" />
+  
+  <script src="scripts/key.js"></script>
+  <script src="lib/jquery1.7.1.min.js"></script>
+  <script src="lib/trello_client.js"></script>
+  <script src="lib/hashSearch.js"></script>
+  <script src="lib/segment.js"></script>
+  <script src="https://unpkg.com/vue"></script>  
+ </head>
+ 
+ <body>
+   <div id="vue-loader">
+   <header v-bind:class="headerWidths ? 'active' : '' ">
+     <span class="header-text">Next Up Trello</span>
+     <div id="header-background">
+       <a class="header-block"id="overdueCards" href="#overdueCards" v-if="headerWidths.overdueWidth" v-bind:style="{width: headerWidths.overdueWidth + '%'}">Overdue ({{Math.floor(headerWidths.overdueWidth,0)}})</a>
+       <a class="header-block" id="dueCards" href="#dueCards" v-if="headerWidths.dueWidth" v-bind:style="{width: headerWidths.dueWidth + '%'}">Due</a>
+       <a class="header-block" id="noDeadlineCards" href="#noDeadlineCards" v-if="headerWidths.noDeadlineWidth" v-bind:style="{width: headerWidths.noDeadlineWidth + '%'}">No Deadline</a>
+       <a class="header-block" id="doneCards" href="#doneCards" v-if="headerWidths.doneWidth" v-bind:style="{width: headerWidths.doneWidth + '%'}">Done</a>
+     </div>
+   </header>
+   <div v-bind:class="[showSidebar ? 'active' : '' , 'sidebar']">
+     <div class="settingsItem">
+       <button class="backToSettings" v-on:click="backToSettings" v-if="showSettings === false">👈 Back to Settings</button>
+       <div id="filters" v-if="showFilters">
+         <h2>Filters</h2>
+         <div class="filter">
+           <div class="organisationName">
+             <span class="organisationNameLabel">Personal</span>
+             <a class="selectAll" v-on:click="selectAllFilters('Personal')">Select all</a>
+           </div>
+           <div v-for="board in boardsToFilter" v-bind:class="[boardsToShow.indexOf(board.id) > -1 ? 'filter-active' : '', 'filterItem']" v-if="board.org === 'Personal'">
+             <label :for="board.id">
+               <span>{{board.name}} <span class="bubble">{{board.cardCount}}</span></span>
+               <input type="checkbox" :id="board.id" :value="board.id" :checked="board.show === true" v-model="boardsToShow">
+             </label>
+           </div>
+         </div>
+         <div class="filter" v-for="org in organisationFilters">
+           <div class="organisationName">
+             <span class="organisationNameLabel">{{org.name}}</span>
+             <a class="selectAll" v-on:click="selectAllFilters(org.name)">Select all</a>
+           </div>
+           <div v-for="board in boardsToFilter" v-bind:class="[boardsToShow.indexOf(board.id) > -1 ? 'filter-active' : '', 'filterItem']" v-if="board.org === org.name">
+             <label :for="board.id">
+               <span>{{board.name}} <span class="bubble">{{board.cardCount}}</span></span>
+               <input type="checkbox" :id="board.id" :value="board.id" :checked="board.show === true" v-model="boardsToShow">
+             </label>
+           </div>
+         </div>
+       </div>
+       <div id="onboarding" v-if="showOnboarding">
+         <h2>About</h2>
+         <p>Here's how Next Up Trello works:</p>
+         <p>Trello boards are divided into <span class="overdue">overdue</span>, <span class="due">due</span>, <span class="done">done</span>, and <span class="no-deadline">cards with no due date</span>.</p>
+         <p><a target="_blank" href="https://www.smhutch.co.uk">Made by SMHutch</a></p>
+       </div>
+     </div>
+     <div id="settings" class="settingsItem" v-if="showSettings">
+       <h2>Settings</h2>
+       <p><a href="#" id="show-filters" v-on:click="openFilters">Filter boards</a></p>
+       <p><a href="#" id="show-onboarding" v-on:click="openOnboarding">About Next Up Trello</a></p>
+       <p><a href="#" id="logout-button" v-if="showLoginForm == false" v-on:click="logout">Sign Out</a></p>
+     </div>
+     <div id="account-form" class="settingsItem" v-if="showLoginForm">
+       <p>See your next available Trello tasks everytime you open a new tab.</p>
+       <p>Get started by connecting your Trello account.</p>
+       <button id="login-button" v-on:click="login">Login</button>
+     </div>
+   </div>
+   <div class="content" id="app">
+     <div id="open-form" v-on:click="handleSidebar" v-bind:class="[showSidebar ? 'sidebar-active' : '']">
+        <span class="unrotate" v-if="showSidebar">Close</span>
+        <span class="unrotate" v-else>Menu</span>
+     </div>
+     <div id="loader" v-if="showLoader">
+       <div class="loading-spinner">
+         <div class="right"></div>
+         <div class="left"></div>
+         <div class="top"></div>
+         <div class="bottom"></div>
+       </div>
+     </div>
+     <div id="trello" v-if="showCards" v-bind:class="[showSidebar ? 'sidebar-active' : '' , 'active']" >
+       <div class="section" v-if="overdueCards.length > 0" style="background-color: #FFCDD2;margin-top:60px;" id="overdueCards">
+         <h2>Overdue</h2>
+         <div class="container">
+           <a v-for="card in overdueCards" class="card" :href="card.url" v-on:click="trackCardClick" >
+             <div>
+               <p class="name">{{card.name}}</p>
+               <div class="info">
+                 <p class="due">{{card.diffDays}}</p>
+                 <p class="board">{{card.boardName}}</p>
+                 <p class="board">{{card.org}}</p>
+               </div>
+             </div>
+           </a>
+         </div>
+       </div>
+       <div class="section" v-if="dueCards.length > 0" style="background-color: #BBDEFB;" id="dueCards">
+         <h2>Due</h2>
+         <div class="container">
+           <a v-for="card in dueCards" class="card" :href="card.url" v-on:click="trackCardClick">
+             <div>
+               <p class="name">{{card.name}}</p>
+               <div class="info">
+                 <p class="due">{{card.diffDays}}</p>
+                 <p class="board">{{card.boardName}}</p>
+                 <p class="board">{{card.org}}</p>
+               </div>
+             </div>
+           </a>
+         </div>
+       </div>
+       <div class="section" v-if="noDeadlineCards.length > 0" style="background-color: #CFD8DC;" id="noDeadlineCards">
+         <h2>No Deadline</h2>
+         <div class="container">
+           <a v-for="card in noDeadlineCards" class="card" :href="card.url" v-on:click="trackCardClick">
+             <div>
+               <p class="name">{{card.name}}</p>
+               <div class="info">
+                 <p class="board">{{card.boardName}}</p>
+                 <p class="board">{{card.org}}</p>
+               </div>
+             </div>
+           </a>
+         </div>
+       </div>
+       <div class="section" v-if="doneCards.length > 0" style="background-color: #C8E6C9;" id="doneCards">
+         <h2>Done ✅</h2>
+         <div class="container">
+           <a v-for="card in doneCards" class="card" :href="card.url" v-on:click="trackCardClick">
+             <div>
+               <p class="name">{{card.name}}</p>
+               <div class="info">
+                 <p class="board">{{card.boardName}}</p>
+                 <p class="board">{{card.org}}</p>
+               </div>
+             </div>
+           </a>
+         </div>
+       </div>
+       <div class="section empty" v-if="filteredCards.length === 0">
+         <div class="container empty" style="text-align:center">
+           <p>No cards found 😕. Please try <span v-on:click="openFilters()">editing your filters.</span></p>
+         </div>
+       </div>
+     </div>
+   </div>
+   
+   
+   </div>
+   
+   <script src="trello.js"></script>
+ </body>
+</html>
+
