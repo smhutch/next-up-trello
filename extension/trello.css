@@ -4,6 +4,10 @@
   --due-color:#2196F3;
   --no-deadline-color:#607D8B;
   --done-color:#4CAF50;
+  --overdue-color-light: #FFCDD2;
+  --due-color-light:#BBDEFB;
+  --no-deadline-color-light:#CFD8DC;
+  --done-color-light:#C8E6C9;
 }
 
 p {
@@ -40,17 +44,19 @@ span.no-deadline:after {background-color: var(--no-deadline-color);}
 #loader,
 #trello,
 #form {
-  visibility: hidden;
-  opacity: 0;
+  /*visibility: hidden;*/
+  /*opacity: 0;*/
   transition:0.4s ease all;
 }
 
+/*#filters,
 #onboarding,
 #account-form,
 #settings {
   display:none
 }
 
+#filters.active,
 #onboarding.active,
 #account-form.active,
 #settings.active
@@ -63,7 +69,7 @@ span.no-deadline:after {background-color: var(--no-deadline-color);}
 #form.active {
   visibility:visible;
   opacity:1;
-}
+}*/
 
 #onboarding {
   background-color: white;
@@ -133,10 +139,32 @@ a {
   color:#222;
 }
 
-  #overdueCards .card {border-top-color:var(--overdue-color);}
-  #dueCards .card {border-top-color:var(--due-color);}
-  #noDeadlineCards .card {border-top-color:var(--no-deadline-color);}
-  #doneCards .card {border-top-color:var(--done-color);}
+#overdueCards .card {border-top-color:var(--overdue-color);}
+#dueCards .card {border-top-color:var(--due-color);}
+#noDeadlineCards .card {border-top-color:var(--no-deadline-color);}
+#doneCards .card {border-top-color:var(--done-color);}
+
+.section h2 {
+  text-align: right;
+  color: white;
+  position: sticky;
+  float: right;
+  top: 120px;
+  margin: 0;
+  padding-right: 50px;
+  text-orientation: upright;
+  font-size: 1em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 300;
+  opacity: 0.2;
+  padding-bottom:60px;
+}
+
+#overdueCards h2 {color: var(--overdue-color);}
+#dueCards h2 {color: var(--due-color);}
+#noDeadlineCards h2 {color: var(--no-deadline-color);}
+#doneCards h2 {color: var(--done-color);}
 
 .container {
   padding:50px 0;
@@ -147,8 +175,16 @@ a {
   transform:translateY(50px);
 }
 
+#trello {
+  position:relative;
+}
+
 #trello.active .container {
   animation:containerRise 0.8s ease forwards;
+}
+
+#trello.sidebar-active {
+  margin-left:300px;
 }
 
 @keyframes containerRise {
@@ -173,7 +209,7 @@ a {
 }
 
 .name {
-  font-size:2em;
+  font-size:1.5em;
   margin:10px 0;
   font-weight:800;  
 }
@@ -189,6 +225,7 @@ a {
   padding: 5px 10px;
   box-shadow: 0px 1px 2px rgba(0,0,0,0.2);
   margin-right: 10px;
+  font-size: 0.8em;
 }
 
 .content {
@@ -230,45 +267,53 @@ a {
   }
 }
 
-#form.closed {
-  width: 50px;
-  height: 50px;
-  bottom: 20px;
-  right: 20px;
-  left: auto;
-  top: auto;
+#open-form {
+  width: 60px;
+  height: 60px;
+  top: 80px;
+  left: 20px;
+  right: auto;
+  bottom: auto;
   box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
   border-right-color: var(--overdue-color);
   border-left-color: var(--due-color);
   border-top-color: var(--no-deadline-color);
   border-bottom-color: var(--done-color);
   border-radius: 5px;
-  animation: emerge 0.4s ease forwards;
+  border-style:solid;
+  border-width:5px;
   text-align: center;
-}
-
-#form.closed:hover {
-  cursor: pointer;
-}
-
-@keyframes emerge {
-  0% {transform: scale(0) rotate(45deg)}
-  100% {
-    transform: scale(1) rotate(45deg);
-  }
-}
-
-#form.closed .form-inner {
-  display: none;
-}
-
-#form.closed div#open-form {
   display: block;
-  transform: rotate(-45deg);
+  transform: rotate(45deg);
   font-size:0.8em;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  line-height: 50px;
+  line-height: 60px;
+  position:fixed;
+  z-index:1;
+  transition:0.4s ease all;
+  background-color: white;
+}
+
+#open-form .unrotate {
+  transform: rotate(-45deg);
+  transition:0.4s ease transform;
+  display: block;
+}
+
+#open-form.sidebar-active {
+  transform:rotate(0deg);
+  line-height:2em;
+  padding:10px 20px;
+  height: auto;
+}
+
+#open-form.sidebar-active .unrotate {
+  transform:rotate(0deg);
+}
+
+#open-form:hover {
+  cursor: pointer;
 }
 
 #form .form-inner {
@@ -282,26 +327,30 @@ a {
   padding: 50px;
 }
 
-#form button#close-form {
+button#close-form {
   position: absolute;
   right: 20px;
   top: 20px;
 }
 
-#form button {
+button {
   text-align: center;
-  padding: 10px 20px;
-  font-weight: 1.6em;
+  padding: 5px 10px;
   text-transform: uppercase;
+  font-size: 0.8em;
   background-color: white;
-  border: none;
+  outline: 0;
+  border-radius:5px;
+  border: 0;
   box-shadow: 0px 0px 5px rgba(0,0,0,0.2);
-  
-  /*Customisable*/
-  display: none;
+  transition:0.4s ease all;
 }
 
-#form button.active {
+button:hover {
+  transform:scale(1.05);
+}
+
+button.active {
   display: block;
 }
 
@@ -331,7 +380,7 @@ header.active:hover .header-text {
   font-weight:300;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  font-size: 1.6em;
+  font-size: 1em;
   display: block;
   transition: 0.4s ease all;
   transform: translateY(-5px);
@@ -350,3 +399,95 @@ header.active:hover .header-text {
   text-transform: uppercase;
   letter-spacing: 0.2em;
 }
+
+.header-block {
+  font-size: 0.8em;
+}
+
+.header-block#overdueCards {
+  background-color:#FFCDD2;
+  color:#F44336;
+}
+
+.header-block#dueCards {
+  background-color:#BBDEFB;
+  color:#2196F3;
+}
+
+.header-block#noDeadlineCards {
+  background-color:#CFD8DC;
+  color:#607D8B;
+}
+
+.header-block#doneCards {
+  background-color:#C8E6C9;
+  color:#4CAF50;
+}
+
+.organisationName {
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.organisationNameLabel {
+  font-weight: 800;
+}
+
+.selectAll {
+  color:var(--due-color);
+}
+
+#filters {
+  /*margin-top:80px;*/
+}
+
+.filterItem {
+  margin-bottom:20px;  
+  padding: 8px;
+  border-radius: 5px;
+  transition: 0.4s ease all;
+}
+
+.filterItem.filter-active {
+  box-shadow:0px 1px 2px 1px rgba(0,0,0,0.2);
+}
+
+.filterItem label {
+  display: flex;
+  justify-content: space-between;
+  align-items:center;  
+}
+
+.filterItem label input {
+  margin-left: 20px;
+}
+
+.sidebar {
+  position: fixed;
+  width: 300px;
+  overflow-y: scroll;
+  bottom: 0;
+  top: 60px;
+  padding-bottom: 50px;
+  transform: translateX(-350px);
+  transition: 0.4s ease all;
+  box-shadow:2px 0px 10px rgba(0,0,0,0.2);
+  z-index: 1;
+  padding:20px;
+  padding-bottom:50px;
+  box-sizing:border-box;
+}
+
+.sidebar.active {
+  transform:translateX(0);
+}
+
+.sidebar .settingsItem {
+  margin-top:80px;
+}
+
+.bubble {
+  background-color:rgba(255,255,255,0.2);
+}
+
