@@ -1,0 +1,2 @@
+const APP_KEY = '7410a9b97d7ee84d4e79357c145296b9';
+export {APP_KEY}

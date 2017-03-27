@@ -7,26 +7,22 @@
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "page_action": {
-    "default_title" : "View Next Up Trello",
-    "default_popup" : "trello.html"
-  },
-  "background": {
-    "scripts": ["trello.js"],
-    "persistent": false
-  },
   "permissions": [
     "identity",
     "*://*.trello.com/",
     "webNavigation",
     "*://*.segment.com/"
   ],
+  "content_security_policy": "script-src 'self'; object-src 'self'",
   "web_accessible_resources": [
-        "trello.*"
+        "*://*.trello.com/",
+        "chrome-extension://*",
+        "index.html",
+        "/dist/build.js"
     ],
   "icons": {
     "16": "icons/16.png",
     "48": "icons/48.png",
     "128": "icons/128.png" 
-  }
+  } 
 }

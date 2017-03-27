@@ -1,12 +1,30 @@
 {
-  "name": "extension",
+  "name": "vue-extension",
+  "description": "A Vue.js project",
   "version": "1.0.0",
-  "description": "",
-  "main": "trello.js",
+  "author": "Scott <smartinhutcheson@gmail.com>",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "serve"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
+    "build:copy": "cp index.html build/index.html && cp manifest.json build/manifest.json",
+    "build:copy-images": "cp -R icons build/",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules && npm run build:copy && npm run build:copy-images"
   },
-  "author": "",
-  "license": "ISC"
+  "dependencies": {
+    "vue": "^2.2.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.0.0",
+    "babel-preset-latest": "^6.0.0",
+    "cross-env": "^3.0.0",
+    "css-loader": "^0.25.0",
+    "file-loader": "^0.9.0",
+    "node-sass": "^4.5.0",
+    "sass-loader": "^5.0.1",
+    "vue-loader": "^11.1.4",
+    "vue-template-compiler": "^2.2.1",
+    "webpack": "^2.2.0",
+    "webpack-dev-server": "^2.2.0"
+  }
 }
