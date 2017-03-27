@@ -241,6 +241,12 @@ export default {
       // Get total cards
       var cardTotal = overdueTotal + dueTotal + doneTotal + noDeadlineTotal;
       
+      if (overdueTotal > 0 || dueTotal > 0) {
+        document.title = `${overdueTotal} Overdue, ${dueTotal} Due`;
+      } else {
+        document.title = "Next Up Trello"
+      }
+            
       if (cardTotal === 0) {
         return false
       } else {
@@ -533,6 +539,10 @@ export default {
   --due-color-light:#BBDEFB;
   --no-deadline-color-light:#CFD8DC;
   --done-color-light:#C8E6C9;
+}
+
+body {
+  font-size:100%;
 }
 
 p {
